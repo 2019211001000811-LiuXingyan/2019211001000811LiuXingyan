@@ -13,7 +13,7 @@
 <body>
 <h1><%= "New User Registration!" %>
 </h1>
-<form method="post">
+<form method="post" action="/register">
     <input type="text" name="name" placeholder="Username"><br/>
     <input type="password" name="pass" placeholder="password" required minlength="8"><br/>
     <input type="email" name="email" placeholder="Email"><br/>
@@ -22,7 +22,7 @@
     <label><input type="radio" name="sex">Female</label><br/>
     <input type="date" name="date" placeholder="Date of Birth(yyyy-mm-dd)"><br/>
     <input type="submit" value="Register"/>
-</form></div>
+</form>
 
 </body>
 </html>
