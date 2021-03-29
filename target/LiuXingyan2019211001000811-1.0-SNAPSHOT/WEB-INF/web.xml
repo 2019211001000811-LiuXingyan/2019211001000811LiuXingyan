@@ -12,10 +12,58 @@
         <servlet-name>LifeCycleServlet</servlet-name>
         <servlet-class>com.LiuXingyan.week3.demo.LifeCycleServlet</servlet-class>
     </servlet>
-    <servlet>
+    <!--<servlet>
         <servlet-name>RegisterServlet</servlet-name>
         <servlet-class>com.LiuXingyan.week3.demo.RegisterServlet</servlet-class>
+    </servlet>-->
+<!--
+    <servlet>
+        <servlet-name>ConfigDemoServlet</servlet-name>
+        <servlet-class>com.LiuXingyan.week4.demo.ConfigDemoServlet</servlet-class>
+        <!- //String driver="com.microsoft.sqlserver.jdbc.SQLServerDriver";
+        //String url="jdbc:sqlserver://localhost;databaseName=userdb";
+        //String username="sa";
+        //String password="admin123456789";
+     --><!-- set in web/xml as config parameter ,for only one servlet , ConfigDemoServlet-->
+        <!--<init-param>
+            <param-name>driver</param-name>
+            <param-value>com.microsoft.sqlserver.jdbc.SQLServerDriver</param-value>
+        </init-param>
+        <init-param>
+            <param-name>url</param-name>
+            <param-value>jdbc:sqlserver://localhost;databaseName=userdb</param-value>
+        </init-param>
+        <init-param>
+            <param-name>username</param-name>
+            <param-value>sa</param-value>
+        </init-param>
+        <init-param>
+            <param-name>password</param-name>
+            <param-value>admin123456789</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>ConfigDemoServlet</servlet-name>
+        <url-pattern>/config</url-pattern>
+    </servlet-mapping>-->
+    <context-param>
+        <param-name>driver</param-name>
+        <param-value>com.microsoft.sqlserver.jdbc.SQLServerDriver</param-value>
+    </context-param>
+    <context-param>
+        <param-name>url</param-name>
+        <param-value>jdbc:sqlserver://localhost;databaseName=userdb</param-value>
+    </context-param>
+    <context-param>
+        <param-name>username</param-name>
+        <param-value>sa</param-value>
+    </context-param>
+    <context-param>
+        <param-name>password</param-name>
+        <param-value>admin123456789</param-value>
+    </context-param>
+
     <servlet-mapping>
         <servlet-name>anyName</servlet-name>
         <url-pattern>/hello</url-pattern>
@@ -25,8 +73,8 @@
         <url-pattern>/life</url-pattern>
         <!--/life ==LifeCycleServlet==com.LiuXingyan.week3.demo.LifeCycleServlet-->
     </servlet-mapping>
-    <servlet-mapping>
+    <!--<servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/register</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>-->
 </web-app>
