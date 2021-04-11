@@ -16,7 +16,8 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        ServletConfig config = getServletConfig();
+        super.init();
+        /*ServletConfig config = getServletConfig();
         String driver = config.getInitParameter("driver");
         String url = config.getInitParameter("url");
         String username = config.getInitParameter("username");
@@ -26,41 +27,40 @@ public class LoginServlet extends HttpServlet {
             con = DriverManager.getConnection(url, username, password);
             System.out.println("init()--> " + con);
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace();*/
+        con=(Connection) getServletContext().getAttribute("con");
         }
-
-    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        doPost(request,response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("utf-8");
-        response.setContentType("text/html;charset=utf-8");
         PrintWriter out = response.getWriter();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-
+        String sql = "select id,username,password,email,gender,birthdate from usertable where username='"+username+"' and password='"+password+"'";
         try {
-            String sql = "select * from usertable where username='LiuXingyan' and password='123'";
             ResultSet rs = con.createStatement().executeQuery(sql);
-            out.println("<html>");
-            out.println("<body>");
-            while (rs.next()) {
-                if(username==rs.getString(username) && password==rs.getString(password)){
-                    out.println("<h1>Login Success!!!</h1>");
-                    out.println("<h2>Welcome</h2>"+username);
-                }else{
-                    out.println("<h3>Username or Password Error!!!</h3>");
-                }
+            if(rs.next()){
+                //out.println("Login Successful!!!");
+                //out.println("Welcome"+username);
+                request.setAttribute("id",rs.getString("id"));
+                request.setAttribute("username",rs.getString("username"));
+                request.setAttribute("password",rs.getString("password"));
+                request.setAttribute("email",rs.getString("email"));
+                request.setAttribute("gender",rs.getString("gender"));
+                request.setAttribute("birthdate",rs.getString("birthdate"));
+                request.getRequestDispatcher("userInfo.jsp").forward(request,response);
+            }else {
+                //out.println("Username or password Error!!!");
+                request.setAttribute("message","Username or Password Error!!!");
+                request.getRequestDispatcher("login.jsp").forward(request,response);
             }
-            out.println("</body>");
-            out.println("</html>");
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
     }
 }

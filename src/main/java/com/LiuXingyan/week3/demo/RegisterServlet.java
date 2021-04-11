@@ -11,9 +11,11 @@ import java.sql.*;
         urlPatterns = {"/register"}
 )
 public class RegisterServlet extends HttpServlet {
-    Connection con=null;
-    public void init() throws ServletException{
-        ServletConfig config=getServletConfig();
+    Connection con = null;
+
+    public void init() throws ServletException {
+        super.init();
+        /*ServletConfig config=getServletConfig();
         String driver=config.getInitParameter("driver");
         String url=config.getInitParameter("url");
         String username=config.getInitParameter("username");
@@ -24,54 +26,51 @@ public class RegisterServlet extends HttpServlet {
             System.out.println("init()--> "+con);
         }catch (ClassNotFoundException | SQLException e){
             e.printStackTrace();
-        }
+        }*/
+        con = (Connection) getServletContext().getAttribute("con");
     }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        doPost(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=utf-8");
-        PrintWriter out= response.getWriter();
-        String username=request.getParameter("name");
-        String password=request.getParameter("password");
-        String email=request.getParameter("email");
-        String gender=request.getParameter("gender");
-        String birthdate=request.getParameter("date");
+        PrintWriter out = response.getWriter();
+        String username = request.getParameter("name");
+        String password = request.getParameter("password");
+        String email = request.getParameter("email");
+        String gender = request.getParameter("gender");
+        String birthdate = request.getParameter("date");
 
-        try{
-            String sql1="insert into usertable(username,password,email,gender,birthdate) values(?,?,?,?,?);";
-            PreparedStatement pstmt=con.prepareStatement(sql1);
-            pstmt.setString(1,username);
-            pstmt.setString(2,password);
-            pstmt.setString(3,email);
-            pstmt.setString(4,gender);
-            pstmt.setString(5, String.valueOf(Date.valueOf(birthdate)));
-            int result=pstmt.executeUpdate();
-            if(result==1) System.out.println("OK");
-            else System.out.println("ERROR");
-
-            String sql="select * from usertable";
-            ResultSet rs=con.createStatement().executeQuery(sql);
-            out.println("<html>");
-            out.println("<body>");
-            while(rs.next()){
-                out.println("<table border=\\\"1\\\">");
+        try {
+            Statement st = con.createStatement();
+            String sql = "insert into usertable(username,password,email,gender,birthdate)" + "values('" + username + "," + password + "," + email + "," + gender + "," + birthdate + "')";
+            System.out.println("sql" + sql);
+            int n = st.executeUpdate(sql);
+            System.out.println("n-->" + n);
+            /*sql="select id,username,password,email,gender,birthdate from usertable";
+            ResultSet rs=st.executeQuery(sql);
+            PrintWriter out=response.getWriter();
+            out.println("<html><title></title><body><table border=1><tr>");
+            out.println("<td>Username</td><td>password</td><td>Email</td><td>Gender</td><td>Birthdate</td>");
+            while (rs.next()){
                 out.println("<tr>");
-                out.println("<th>ID:"+rs.getString(1)+"</th>");
-                out.println("<th>UserName:"+rs.getString(2)+"</th>");
-                out.println("<th>Passsword:"+rs.getString(3)+"</th>");
-                out.println("<th>Email:"+rs.getString(4)+"</th>");
-                out.println("<th>Gender:"+rs.getString(5)+"</th>");
-                out.println("<th>Birthdate:"+rs.getString(6)+"</th>");
+                out.println("<td>"+rs.getString("username")+"</td>");
+                out.println("<td>"+rs.getString("password")+"</td>");
+                out.println("<td>"+rs.getString("email")+"</td>");
+                out.println("<td>"+rs.getString("gender")+"</td>");
+                out.println("<td>"+rs.getString("birthdate")+"</td>");
                 out.println("</tr>");
-                out.println("</table>");
             }
-            out.println("</body>");
-            out.println("</html>");
+            out.println("</table></body></html>");
+            request.setAttribute("rsname",rs);
+            request.getRequestDispatcher("userList.jsp").forward(request,response);
+            */
+            response.sendRedirect("login.jsp");
         } catch (SQLException e) {
             e.printStackTrace();
         }

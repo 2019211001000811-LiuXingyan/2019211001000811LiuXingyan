@@ -16,6 +16,10 @@
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>com.LiuXingyan.week5.demo.LoginServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SearchServlet</servlet-name>
+        <servlet-class>com.LiuXingyan.week6.demo.SearchServlet</servlet-class>
+    </servlet>
     <!--<servlet>
         <servlet-name>RegisterServlet</servlet-name>
         <servlet-class>com.LiuXingyan.week3.demo.RegisterServlet</servlet-class>
