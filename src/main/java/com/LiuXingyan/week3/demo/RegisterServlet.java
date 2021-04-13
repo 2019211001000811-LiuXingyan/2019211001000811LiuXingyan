@@ -13,13 +13,14 @@ import java.sql.*;
 public class RegisterServlet extends HttpServlet {
     Connection con = null;
 
+    @Override
     public void init() throws ServletException {
         super.init();
-        /*ServletConfig config=getServletConfig();
-        String driver=config.getInitParameter("driver");
-        String url=config.getInitParameter("url");
-        String username=config.getInitParameter("username");
-        String password=config.getInitParameter("password");
+        /*ServletContext context=getServletContext();
+        String driver=context.getInitParameter("driver");
+        String url=context.getInitParameter("url");
+        String username=context.getInitParameter("username");
+        String password=context.getInitParameter("password");
         try{
             Class.forName(driver);
             con = DriverManager.getConnection(url,username,password);
