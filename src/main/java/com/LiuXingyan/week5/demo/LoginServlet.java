@@ -1,5 +1,8 @@
 package com.LiuXingyan.week5.demo;
 
+import com.LiuXingyan.dao.UserDao;
+import com.LiuXingyan.model.User;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
@@ -33,7 +36,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request,response);
+        request.getRequestDispatcher("WEB-INF/views/login.jsp").forward(request,response);
     }
 
     @Override
@@ -41,7 +44,21 @@ public class LoginServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        String sql = "select id,username,password,email,gender,birthdate from usertable where username='"+username+"' and password='"+password+"'";
+
+        UserDao userDao=new UserDao();
+        try {
+            User user= userDao.findByUsernamePassword(con,username,password);
+            if (user!=null){
+                request.setAttribute("user",user);
+                request.getRequestDispatcher("WEB-INF/views/userInfo.jsp").forward(request,response);
+            }else {
+                request.setAttribute("message","Username or Password Error!!!");
+                request.getRequestDispatcher("WEB-INF/views/login.jsp").forward(request,response);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+       /* String sql = "select id,username,password,email,gender,birthdate from usertable where username='"+username+"' and password='"+password+"'";
         try {
             ResultSet rs = con.createStatement().executeQuery(sql);
             if(rs.next()){
@@ -61,6 +78,6 @@ public class LoginServlet extends HttpServlet {
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-        }
+        }*/
     }
 }
