@@ -37,7 +37,7 @@ public class UserDao implements IUserDao{
 
     @Override
     public int updateUser(Connection con, User user) throws SQLException {
-        String sql="update usertable set username=?,password=?,email=?,gender=?,birthday=? where id=?;";
+        String sql="update usertable set username=?,password=?,email=?,gender=?,birthdate=? where id=?;";
         PreparedStatement preparedStatement =con.prepareStatement(sql);
         preparedStatement.setString(1,user.getUsername());
         preparedStatement.setString(2,user.getPassword());
@@ -176,7 +176,7 @@ public class UserDao implements IUserDao{
     public List<User> findByBirthdate(Connection con, Date birthDate) throws SQLException {
         List<User> userList=new ArrayList<User>();
 
-        String sql="select * from usertable where birthday=?";
+        String sql="select * from usertable where birthdate=?";
         PreparedStatement preparedStatement=con.prepareStatement(sql);
         preparedStatement.setDate(1, (java.sql.Date) birthDate);
         ResultSet rs=preparedStatement.executeQuery();

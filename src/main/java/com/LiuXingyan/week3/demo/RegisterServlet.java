@@ -8,7 +8,7 @@ import java.io.PrintWriter;
 import java.sql.*;
 
 @WebServlet(
-        urlPatterns = {"/register"}
+        urlPatterns = {"/register"},loadOnStartup = 1
 )
 public class RegisterServlet extends HttpServlet {
     Connection con = null;
@@ -33,23 +33,20 @@ public class RegisterServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response);
+        request.getRequestDispatcher("WEB-INF/views/register.jsp").forward(request,response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("utf-8");
-        response.setContentType("text/html;charset=utf-8");
-        PrintWriter out = response.getWriter();
-        String username = request.getParameter("name");
+        String username = request.getParameter("username");
         String password = request.getParameter("password");
         String email = request.getParameter("email");
         String gender = request.getParameter("gender");
-        String birthdate = request.getParameter("date");
+        String birthDate = request.getParameter("birthDate");
 
         try {
             Statement st = con.createStatement();
-            String sql = "insert into usertable(username,password,email,gender,birthdate)" + "values('" + username + "," + password + "," + email + "," + gender + "," + birthdate + "')";
+            String sql = "insert into usertable(username,password,email,gender,birthdate)" + "values('" + username + "','" + password + "','" + email + "','" + gender + "','" + birthDate + "')";
             System.out.println("sql" + sql);
             int n = st.executeUpdate(sql);
             System.out.println("n-->" + n);
@@ -64,15 +61,24 @@ public class RegisterServlet extends HttpServlet {
                 out.println("<td>"+rs.getString("password")+"</td>");
                 out.println("<td>"+rs.getString("email")+"</td>");
                 out.println("<td>"+rs.getString("gender")+"</td>");
-                out.println("<td>"+rs.getString("birthdate")+"</td>");
+                out.println("<td>"+rs.getString("birthDate")+"</td>");
                 out.println("</tr>");
             }
             out.println("</table></body></html>");
             request.setAttribute("rsname",rs);
-            request.getRequestDispatcher("userList.jsp").forward(request,response);
-            */
-            response.sendRedirect("login.jsp");
-        } catch (SQLException e) {
+            request.getRequestDispatcher("userList.jsp").forward(request,response);*/
+
+            response.sendRedirect("login");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+    @Override
+    public void destroy(){
+        super.destroy();
+        try{
+            con.close();
+        }catch (SQLException e){
             e.printStackTrace();
         }
     }
