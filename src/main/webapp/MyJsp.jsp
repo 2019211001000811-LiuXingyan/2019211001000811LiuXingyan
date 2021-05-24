@@ -7,7 +7,7 @@
 --%>
 <%@include file="header.jsp"%>
 
-    This is my JSP page.<br>
+    This is my JSP page.<br><%pageContext.%>
 
 <%@include file="footer.jsp"%>
 
